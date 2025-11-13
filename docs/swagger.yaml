@@ -1,0 +1,165 @@
+basePath: /
+definitions:
+  main.ErrorResponse:
+    properties:
+      error:
+        example: Invalid input data
+        type: string
+    type: object
+  models.Todo:
+    properties:
+      completed:
+        type: boolean
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        description: Replaced gorm.Model with explicit fields for Swagger compatibility
+        type: integer
+      title:
+        description: Core model fields
+        type: string
+      updated_at:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    name: Support
+  description: A sample server for a Todo list built with the Iris web framework.
+  license:
+    name: Apache 2.0
+  title: Todo API with Iris and GORM
+  version: "1.0"
+paths:
+  /todos:
+    get:
+      description: Retrieves a list of all Todo items.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Todo'
+            type: array
+        "500":
+          description: Failed to retrieve Todos
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: Get all Todo items
+    post:
+      consumes:
+      - application/json
+      description: Creates a new Todo item.
+      parameters:
+      - description: Todo item to create
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.Todo'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Todo'
+        "400":
+          description: Invalid input data
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: Create a new Todo item
+  /todos/{id}:
+    delete:
+      description: Deletes a Todo item based on its ID.
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Todo item not found
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: Delete a Todo item
+    get:
+      description: Retrieves a Todo item based on its ID.
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Todo'
+        "404":
+          description: Todo item not found
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: Get a single Todo item
+    put:
+      consumes:
+      - application/json
+      description: Updates the details of an existing Todo item.
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated Todo object
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.Todo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Todo'
+        "400":
+          description: Invalid input data
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+        "404":
+          description: Todo item not found
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: Update an existing Todo item
+schemes:
+- http
+swagger: "2.0"
