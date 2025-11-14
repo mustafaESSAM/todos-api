@@ -7,7 +7,6 @@ import (
 	"todos-iris-api/models"
 
 	"github.com/kataras/iris/v12"
-	swaggerFiles "github.com/swaggo/files"
 
 	// Use standard http-swagger for maximum compatibility
 	swagger "github.com/swaggo/http-swagger"
@@ -209,7 +208,7 @@ func main() {
 	docs.SwaggerInfo.Title = "Todo API"
 	//app.Handle("GET", "/swagger/{any:path}", swagger.WrapHandler)
 
-	swaggerHandler := swagger.WrapHandler(swaggerFiles.Handler)
+	swaggerHandler := swagger.WrapHandler
 	app.Get("/swagger/{path:path}", func(ctx iris.Context) {
 		swaggerHandler.ServeHTTP(ctx.ResponseWriter(), ctx.Request())
 	})
